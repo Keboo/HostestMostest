@@ -1,4 +1,4 @@
-// See https://aka.ms/new-console-template for more information
+﻿// See https://aka.ms/new-console-template for more information
 using HostestMostest;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +19,8 @@ hostBuilder.ConfigureAppConfiguration(configBuilder =>
 hostBuilder.ConfigureServices(serviceCollection =>
 {
     serviceCollection.AddSingleton<MostestHostestService>();
+    serviceCollection.AddOptions<Hostest>()
+        .BindConfiguration(Hostest.SectionName);
 });
 
 //Setup logging
