@@ -1,10 +1,18 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 using HostestMostest;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 IHostBuilder hostBuilder = new HostBuilder();
+
+//Setup app configuration
+hostBuilder.ConfigureAppConfiguration(configBuilder =>
+{
+    configBuilder.AddCommandLine(args);
+    configBuilder.AddJsonFile("appsettings.json", optional: false);
+});
 
 //Setup DI
 hostBuilder.ConfigureServices(serviceCollection =>
@@ -13,12 +21,17 @@ hostBuilder.ConfigureServices(serviceCollection =>
 });
 
 //Setup logging
-hostBuilder.ConfigureLogging(loggingBuilder =>
+hostBuilder.ConfigureLogging((hostingContext, loggingBuilder) =>
 {
+    loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+
     loggingBuilder.AddSimpleConsole(options => options.SingleLine = true);
     loggingBuilder.AddDebug();
+
     //loggingBuilder.AddSystemdConsole();
 });
+
+
 
 using IHost host = hostBuilder.Build();
 
