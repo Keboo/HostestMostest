@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace HostestMostest;
 
-public class MostestHostestService
+public class MostestHostestService : BackgroundService
 {
     public MostestHostestService(
         IOptions<Hostest> options,
@@ -25,6 +26,11 @@ public class MostestHostestService
         Logger.LogWarning("Activation warning! The GenericHost is too awesome!");
 
         return Task.CompletedTask;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        await ActivateAsync();
     }
 
     public IOptions<Hostest> Options { get; }
