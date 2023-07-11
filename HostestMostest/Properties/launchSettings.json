@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "HostestMostest": {
+      "commandName": "Project",
+      "commandLineArgs": "--Logging:LogLevel:Default Information",
+      "environmentVariables": {
+        "MOSTEST__Logging__LogLevel__Default": "Warning"
+      }
+    }
+  }
+}

@@ -10,8 +10,9 @@ IHostBuilder hostBuilder = new HostBuilder();
 //Setup app configuration
 hostBuilder.ConfigureAppConfiguration(configBuilder =>
 {
-    configBuilder.AddCommandLine(args);
     configBuilder.AddJsonFile("appsettings.json", optional: false);
+    configBuilder.AddEnvironmentVariables("MOSTEST__");
+    configBuilder.AddCommandLine(args);
 });
 
 //Setup DI
