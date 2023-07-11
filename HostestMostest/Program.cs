@@ -1,16 +1,38 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using HostestMostest;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 IHostBuilder hostBuilder = new HostBuilder();
+
+//Setup DI
+hostBuilder.ConfigureServices(serviceCollection =>
+{
+    serviceCollection.AddSingleton<MostestHostestService>();
+});
+
+//Setup logging
+hostBuilder.ConfigureLogging(loggingBuilder =>
+{
+    loggingBuilder.AddSimpleConsole(options => options.SingleLine = true);
+    loggingBuilder.AddDebug();
+    //loggingBuilder.AddSystemdConsole();
+});
+
 using IHost host = hostBuilder.Build();
 
-Console.WriteLine("Starting app...");
+var logger = host.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("Starting app...");
 await host.StartAsync();
 
-Console.WriteLine("Running app...");
+var service = host.Services.GetRequiredService<MostestHostestService>();
+await service.ActivateAsync();
+
+logger.LogInformation("Running app...");
 await host.StopAsync();
 
-Console.WriteLine("Waiting for shutdown...");
+logger.LogInformation("Waiting for shutdown...");
 await host.WaitForShutdownAsync();
 
-Console.WriteLine("Shutdown...");
+logger.LogInformation("Shutdown...");
